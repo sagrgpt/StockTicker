@@ -1,6 +1,6 @@
-package com.showcase.pricetracker.repository
+package com.showcase.pricetracker.usecase
 
-import com.showcase.pricetracker.repository.model.StockEntity
+import com.showcase.pricetracker.usecase.model.StockEntity
 import io.reactivex.rxjava3.core.Single
 
 interface QuotationRemote {

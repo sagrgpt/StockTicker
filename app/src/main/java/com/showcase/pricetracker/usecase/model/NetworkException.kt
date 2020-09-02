@@ -1,4 +1,4 @@
-package com.showcase.pricetracker.repository.model
+package com.showcase.pricetracker.usecase.model
 
 data class NetworkException(
     val code: Int,

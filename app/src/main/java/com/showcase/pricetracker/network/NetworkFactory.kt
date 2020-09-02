@@ -1,6 +1,6 @@
-package com.showcase.pricetracker.repository.network
+package com.showcase.pricetracker.network
 
-import com.showcase.pricetracker.repository.NetworkGateway
+import com.showcase.pricetracker.usecase.NetworkGateway
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

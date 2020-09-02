@@ -1,7 +1,7 @@
-package com.showcase.pricetracker.repository.network
+package com.showcase.pricetracker.network
 
-import com.showcase.pricetracker.repository.NetworkGateway
-import com.showcase.pricetracker.repository.QuotationRemote
+import com.showcase.pricetracker.usecase.NetworkGateway
+import com.showcase.pricetracker.usecase.QuotationRemote
 
 class RemoteGateway(
     private val tickerTapeService: TickerTapeService

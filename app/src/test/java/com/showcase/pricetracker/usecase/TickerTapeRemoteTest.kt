@@ -1,13 +1,13 @@
-package com.showcase.pricetracker.repository
+package com.showcase.pricetracker.usecase
 
 import com.google.gson.Gson
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.verify
-import com.showcase.pricetracker.repository.model.NetworkException
-import com.showcase.pricetracker.repository.network.ApiResponse
-import com.showcase.pricetracker.repository.network.StocksSchema
-import com.showcase.pricetracker.repository.network.TickerTapeRemote
-import com.showcase.pricetracker.repository.network.TickerTapeService
+import com.showcase.pricetracker.network.ApiResponse
+import com.showcase.pricetracker.network.StocksSchema
+import com.showcase.pricetracker.network.TickerTapeRemote
+import com.showcase.pricetracker.network.TickerTapeService
+import com.showcase.pricetracker.usecase.model.NetworkException
 import io.reactivex.rxjava3.core.Single
 import org.hamcrest.CoreMatchers.`is`
 import org.junit.Assert.assertThat

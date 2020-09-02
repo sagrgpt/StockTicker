@@ -1,4 +1,4 @@
-package com.showcase.pricetracker.repository
+package com.showcase.pricetracker.usecase
 
 interface NetworkGateway {
 

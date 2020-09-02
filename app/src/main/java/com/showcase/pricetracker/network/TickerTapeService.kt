@@ -1,4 +1,4 @@
-package com.showcase.pricetracker.repository.network
+package com.showcase.pricetracker.network
 
 import io.reactivex.rxjava3.core.Single
 import retrofit2.http.GET
