@@ -1,7 +1,5 @@
-package com.showcase.pricetracker.repository
+package com.showcase.pricetracker.repository.network
 
-import com.showcase.pricetracker.repository.schema.ApiResponse
-import com.showcase.pricetracker.repository.schema.StocksSchema
 import io.reactivex.rxjava3.core.Single
 import retrofit2.http.GET
 import retrofit2.http.Query

@@ -1,9 +1,8 @@
-package com.showcase.pricetracker.repository
+package com.showcase.pricetracker.repository.network
 
+import com.showcase.pricetracker.repository.QuotationRemote
 import com.showcase.pricetracker.repository.model.NetworkException
 import com.showcase.pricetracker.repository.model.StockEntity
-import com.showcase.pricetracker.repository.schema.ApiResponse
-import com.showcase.pricetracker.repository.schema.StocksSchema
 import io.reactivex.rxjava3.core.Single
 import java.text.ParseException
 import java.text.SimpleDateFormat

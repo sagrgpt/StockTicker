@@ -1,4 +1,4 @@
-package com.showcase.pricetracker.repository.schema
+package com.showcase.pricetracker.repository.network
 
 import com.google.gson.annotations.SerializedName
 

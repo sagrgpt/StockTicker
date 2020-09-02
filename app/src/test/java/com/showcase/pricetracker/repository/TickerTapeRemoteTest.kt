@@ -4,8 +4,10 @@ import com.google.gson.Gson
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.verify
 import com.showcase.pricetracker.repository.model.NetworkException
-import com.showcase.pricetracker.repository.schema.ApiResponse
-import com.showcase.pricetracker.repository.schema.StocksSchema
+import com.showcase.pricetracker.repository.network.ApiResponse
+import com.showcase.pricetracker.repository.network.StocksSchema
+import com.showcase.pricetracker.repository.network.TickerTapeRemote
+import com.showcase.pricetracker.repository.network.TickerTapeService
 import io.reactivex.rxjava3.core.Single
 import org.hamcrest.CoreMatchers.`is`
 import org.junit.Assert.assertThat
