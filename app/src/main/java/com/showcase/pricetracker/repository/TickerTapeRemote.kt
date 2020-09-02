@@ -1,0 +1,74 @@
+package com.showcase.pricetracker.repository
+
+import com.showcase.pricetracker.repository.model.NetworkException
+import com.showcase.pricetracker.repository.model.StockEntity
+import com.showcase.pricetracker.repository.schema.ApiResponse
+import com.showcase.pricetracker.repository.schema.StocksSchema
+import io.reactivex.rxjava3.core.Single
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
+
+class TickerTapeRemote(
+    private val service: TickerTapeService
+) : QuotationRemote {
+
+    override fun getStockQuotation(
+        sidList: List<String>
+    ): Single<List<StockEntity>> {
+
+        return service.getBulkQuotes(sidList.toParamString())
+            .map {
+                it?.let { getSuccessResponse(it) }
+            }
+    }
+
+    private fun getSuccessResponse(
+        response: ApiResponse<List<StocksSchema>>
+    ): List<StockEntity> {
+
+        return when (response.success) {
+            true -> response.data
+                ?.toStockList()
+                ?: throw NetworkException(200, "Stock list is null")
+            false -> throw NetworkException(400, "Message: ${response.error} Error Type: ${response.errorType}")
+        }
+
+    }
+
+    private fun List<StocksSchema>.toStockList(): List<StockEntity> {
+        val stockList = mutableListOf<StockEntity>()
+        forEach {
+            stockList.add(it.toStockEntity())
+        }
+        return stockList
+    }
+
+    private fun List<String>.toParamString(): String {
+        var queryParam = ""
+        forEach { queryParam += "$it%2C" }
+        return queryParam.removeSuffix("%2C")
+    }
+
+    private fun StocksSchema.toStockEntity(): StockEntity {
+        return StockEntity(
+            sid = sid,
+            volume = volume,
+            change = change,
+            close = close,
+            high = high,
+            low = low,
+            price = price,
+            date = getDate(date)
+        )
+    }
+
+    private fun getDate(date: String): Date {
+        return SimpleDateFormat(
+            "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+            Locale.ROOT
+        ).run { parse(date) }
+            ?: throw ParseException("Unable to parse $date", 0)
+    }
+
+}
