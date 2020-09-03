@@ -1,9 +1,10 @@
-package com.showcase.pricetracker
+package com.showcase.pricetracker.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import com.showcase.pricetracker.R
 
-class MainActivity : AppCompatActivity() {
+class HostActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
