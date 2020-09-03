@@ -1,11 +1,9 @@
 package com.showcase.pricetracker.usecase.model
 
-import java.util.*
-
 data class StockEntity(
     val change: Float,
     val close: Float,
-    val date: Date,
+    val epoch: Long,
     val high: Float,
     val low: Float,
     val price: Float,

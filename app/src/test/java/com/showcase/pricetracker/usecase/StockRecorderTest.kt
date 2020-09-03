@@ -12,7 +12,6 @@ import org.junit.Test
 import org.mockito.Mock
 import org.mockito.Mockito.doReturn
 import org.mockito.MockitoAnnotations
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 class StockRecorderTest {
@@ -28,7 +27,7 @@ class StockRecorderTest {
     private val relStockEntity = StockEntity(
         40.95f,
         2087.25f,
-        Date(),
+        1599131179,
         2138f,
         913.5f,
         9f,
@@ -151,18 +150,6 @@ class StockRecorderTest {
             `is`(3)
         )
 
-        /*assertThat(
-            recorder.mostExpensiveSid,
-            `is`("HUL")
-        )
-
-        testScheduler.advanceTimeBy(4L, TimeUnit.SECONDS)
-        testObserver.assertValueCount(2)
-        assertThat(
-            recorder.stockRecord["HUL"]!!.size,
-            `is`(2)
-        )
-*/
         testObserver.dispose()
     }
 

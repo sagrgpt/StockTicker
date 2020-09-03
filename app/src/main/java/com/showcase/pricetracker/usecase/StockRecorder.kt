@@ -81,7 +81,7 @@ class StockRecorder(
         return Stock(
             sid = sid,
             price = price,
-            date = date,
+            epoch = epoch,
             low = low,
             high = high,
             close = close,
