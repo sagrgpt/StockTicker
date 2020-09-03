@@ -45,8 +45,8 @@ class TickerTapeRemote(
 
     private fun List<String>.toParamString(): String {
         var queryParam = ""
-        forEach { queryParam += "$it%2C" }
-        return queryParam.removeSuffix("%2C")
+        forEach { queryParam += "$it," }
+        return queryParam.removeSuffix(",")
     }
 
     private fun StocksSchema.toStockEntity(): StockEntity {

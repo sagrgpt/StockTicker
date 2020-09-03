@@ -71,7 +71,7 @@ class TickerTapeRemoteTest {
 
         remote.getStockQuotation(sidsList)
 
-        verify(service).getBulkQuotes("TCS%2CRELI%2CHDBK%2CINFY%2CHLL%2CITC")
+        verify(service).getBulkQuotes("TCS,RELI,HDBK,INFY,HLL,ITC")
     }
 
     @Test

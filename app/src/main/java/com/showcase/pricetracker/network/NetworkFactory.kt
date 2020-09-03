@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object NetworkFactory {
 
-    private val baseUrl = "https://mdxa082o0c.execute-api.us-west-2.amazonaws.com/dev/"
+    private const val baseUrl = "https://api.tickertape.in"
 
     fun createGateway(): NetworkGateway {
         return RemoteGateway(getRemoteService())
