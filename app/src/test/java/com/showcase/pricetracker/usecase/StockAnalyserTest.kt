@@ -7,7 +7,7 @@ import org.junit.Test
 class StockAnalyserTest {
 
     //region Stock quotes test data
-    private val quote1 = Stock(
+    private val quote1 = Quote(
         5f,
         2087.25f,
         1599131179,
@@ -84,7 +84,7 @@ class StockAnalyserTest {
     @Test
     fun emptyQuotesListTest() {
         val actualValue = usecase.getStockHistory(emptyList())
-        assertThat(actualValue, `is`(QuoteHistory()))
+        assertThat(actualValue, `is`(StockHistory()))
     }
 
     @Test

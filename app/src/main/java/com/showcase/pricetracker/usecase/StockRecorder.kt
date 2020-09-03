@@ -19,7 +19,7 @@ class StockRecorder(
         "ITC",
     )
     private var highestPrice = Float.NEGATIVE_INFINITY
-    val stockRecord = mutableMapOf<String, List<Stock>>()
+    val stockRecord = mutableMapOf<String, List<Quote>>()
     var mostExpensiveSid: String = ""
 
     fun play(): Observable<Watchlist> {
@@ -80,8 +80,8 @@ class StockRecorder(
         return StockOverview(name, sid, price, change > 0)
     }
 
-    private fun StockEntity.toStock(): Stock {
-        return Stock(
+    private fun StockEntity.toStock(): Quote {
+        return Quote(
             sid = sid,
             price = price,
             epoch = epoch,

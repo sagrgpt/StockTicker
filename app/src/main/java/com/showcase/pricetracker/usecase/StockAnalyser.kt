@@ -2,9 +2,9 @@ package com.showcase.pricetracker.usecase
 
 class StockAnalyser {
 
-    fun getStockHistory(quotes: List<Stock>): QuoteHistory {
+    fun getStockHistory(quotes: List<Quote>): StockHistory {
         return if (quotes.isEmpty())
-            return QuoteHistory()
+            return StockHistory()
         else
             getStockHistory(
                 quotes.last(),
@@ -13,23 +13,24 @@ class StockAnalyser {
     }
 
     private fun getStockHistory(
-        latestStock: Stock,
-        orderedStockList: List<Stock>
-    ): QuoteHistory {
-        return QuoteHistory(
-            latestStock.price,
-            latestStock.change,
-            getPercentChange(latestStock),
-            latestStock.epoch,
-            orderedStockList
+        latestQuote: Quote,
+        orderedQuoteList: List<Quote>
+    ): StockHistory {
+        return StockHistory(
+            latestQuote.sid,
+            latestQuote.price,
+            latestQuote.change,
+            getPercentChange(latestQuote),
+            latestQuote.epoch,
+            orderedQuoteList
         )
     }
 
     private fun getHistoryInArithmeticProgression(
-        quoteList: List<Stock>
-    ): List<Stock> {
-        val orderedList = mutableListOf<Stock>()
-        lateinit var lastItem: Stock
+        quoteList: List<Quote>
+    ): List<Quote> {
+        val orderedList = mutableListOf<Quote>()
+        lateinit var lastItem: Quote
         for (index in quoteList.indices) {
             val currentItem = quoteList[index]
             if (isNotFirstElement(index))
@@ -40,9 +41,9 @@ class StockAnalyser {
         return orderedList
     }
 
-    private fun MutableList<Stock>.assertInAP(
-        lastItem: Stock,
-        currentItem: Stock
+    private fun MutableList<Quote>.assertInAP(
+        lastItem: Quote,
+        currentItem: Quote
     ) {
         calcTermsBetween(currentItem, lastItem)
             .also { noOfTerms ->
@@ -51,15 +52,15 @@ class StockAnalyser {
             }
     }
 
-    private fun calcTermsBetween(currentItem: Stock, lastItem: Stock) =
+    private fun calcTermsBetween(currentItem: Quote, lastItem: Quote) =
         ((currentItem.epoch - lastItem.epoch) / INTERVAL) - 1
 
-    private fun MutableList<Stock>.addToList(numberOfTerms: Long, lastItem: Stock) {
+    private fun MutableList<Quote>.addToList(numberOfTerms: Long, lastItem: Quote) {
         for (multiplier in 1..numberOfTerms)
             add(lastItem.copy(epoch = lastItem.epoch + (INTERVAL * multiplier)))
     }
 
-    private fun getPercentChange(latestQuote: Stock) =
+    private fun getPercentChange(latestQuote: Quote) =
         (latestQuote.change / latestQuote.price) * 100
 
     private fun isNotFirstElement(index: Int) = index != 0
