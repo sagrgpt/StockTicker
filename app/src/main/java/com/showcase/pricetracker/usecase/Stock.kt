@@ -1,6 +1,6 @@
 package com.showcase.pricetracker.usecase
 
-import java.util.*
+const val INTERVAL = 5000L
 
 data class Stock(
     val change: Float,
@@ -22,4 +22,12 @@ data class StockOverview(
 
 data class Watchlist(
     val stockList: List<StockOverview> = emptyList()
+)
+
+data class QuoteHistory(
+    val price: Float = 0f,
+    val change: Float = 0f,
+    val percentChange: Float = 0f,
+    val epoch: Long = 0,
+    val quotes: List<Stock> = emptyList()
 )

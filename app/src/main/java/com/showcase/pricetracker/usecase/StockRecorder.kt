@@ -25,12 +25,15 @@ class StockRecorder(
     fun play(): Observable<Watchlist> {
         return Observable.interval(
             0,
-            5,
-            TimeUnit.SECONDS,
+            INTERVAL,
+            TimeUnit.MILLISECONDS,
             schedulerProvider.io
         )
             .flatMapSingle { remote.getStockQuotation(sids) }
-            .filter { it.isNotEmpty() }
+            .filter {
+                it.isNotEmpty()
+            }
+            .distinctUntilChanged()
             .doOnNext { it?.let { record(it) } }
             .map { it.toWatchList() }
     }
