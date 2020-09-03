@@ -3,13 +3,20 @@ package com.showcase.pricetracker.ui
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.showcase.pricetracker.R
+import com.showcase.pricetracker.network.NetworkFactory
+import com.showcase.pricetracker.schedulers.DefaultScheduler
+import com.showcase.pricetracker.ui.WatchListViewModel.WatchListVmFactory
 import com.showcase.pricetracker.ui.adapter.WatchListAdapter
 import com.showcase.pricetracker.usecase.StockOverview
+import com.showcase.pricetracker.usecase.StockRecorder
+import com.showcase.pricetracker.usecase.Watchlist
 import kotlinx.android.synthetic.main.watch_list_fragment.*
 
 class WatchListFragment : Fragment() {
@@ -22,6 +29,11 @@ class WatchListFragment : Fragment() {
 
     private lateinit var adapter: WatchListAdapter
 
+    private val viewStateObserver = Observer<Watchlist> {
+        adapter.dataSet = it.stockList
+        adapter.notifyDataSetChanged()
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.watch_list_fragment, container, false)
@@ -31,10 +43,9 @@ class WatchListFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         setHasOptionsMenu(true)
         setupListView()
-        viewModel = ViewModelProvider(this).get(WatchListViewModel::class.java)
-        // TODO: Use the ViewModel
+        initDependencies()
+        viewModel.viewState().observe(viewLifecycleOwner, viewStateObserver)
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.main, menu)
@@ -42,10 +53,26 @@ class WatchListFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_record -> Log.i("WatchList", "Record option pressed")
-            R.id.action_history -> Log.i("WatchList", "History option pressed")
+            R.id.action_record -> onActionRecord(item)
+            R.id.action_history -> onClickHistory()
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun onActionRecord(item: MenuItem) {
+        viewModel.toggleRecording()
+        if (viewModel.isRecording())
+            item.setAsPause()
+        else
+            item.setAsPlay()
+    }
+
+    private fun onClickHistory() {
+        Log.i("WatchList", "History option pressed")
+    }
+
+    private fun onClick(stock: StockOverview) {
+        Log.i("WatchList", "${stock.sid} clicked")
     }
 
     private fun setupListView() {
@@ -59,10 +86,34 @@ class WatchListFragment : Fragment() {
             .also { watchListRecycler.addItemDecoration(it) }
 
         adapter = WatchListAdapter(emptyList()) { onClick(it) }
+
+        watchListRecycler.adapter = adapter
     }
 
-    private fun onClick(stock: StockOverview) {
-        Log.i("WatchList", "${stock.sid} clicked")
+    private fun MenuItem.setAsPause() {
+        setDrawable(R.drawable.ic_pause_black)
+        title = getString(R.string.action_pause)
     }
+
+    private fun MenuItem.setAsPlay() {
+        setDrawable(R.drawable.ic_play_arrow_black)
+        title = getString(R.string.action_pause)
+    }
+
+    private fun MenuItem.setDrawable(id: Int) {
+        context?.let { setIcon(ContextCompat.getDrawable(it, id)) }
+    }
+
+    private fun initDependencies() {
+        val schedulerProvider = DefaultScheduler()
+        val remote = NetworkFactory.createGateway()
+            .getQuotationRemote()
+        val usecase = StockRecorder(remote, schedulerProvider)
+        viewModel = ViewModelProvider(
+            this,
+            WatchListVmFactory(usecase, schedulerProvider)
+        ).get(WatchListViewModel::class.java)
+    }
+
 
 }
