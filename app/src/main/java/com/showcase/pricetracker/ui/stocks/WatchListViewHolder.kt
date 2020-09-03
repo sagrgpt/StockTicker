@@ -1,4 +1,4 @@
-package com.showcase.pricetracker.ui.adapter
+package com.showcase.pricetracker.ui.stocks
 
 import android.view.View
 import android.widget.ImageView

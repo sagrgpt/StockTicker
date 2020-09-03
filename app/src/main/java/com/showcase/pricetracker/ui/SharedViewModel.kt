@@ -1,4 +1,4 @@
-package com.showcase.pricetracker.ui.stocks
+package com.showcase.pricetracker.ui
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -6,12 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.showcase.pricetracker.schedulers.SchedulerProvider
-import com.showcase.pricetracker.usecase.Stock
 import com.showcase.pricetracker.usecase.StockRecorder
 import com.showcase.pricetracker.usecase.Watchlist
 import io.reactivex.rxjava3.disposables.Disposable
 
-class WatchListViewModel(
+class SharedViewModel(
     private val recorder: StockRecorder,
     private val scheduler: SchedulerProvider
 ) : ViewModel() {
@@ -19,6 +18,7 @@ class WatchListViewModel(
     private var disposable: Disposable? = null
     private val watchLiveData = MutableLiveData<Watchlist>()
     private var state = RecordingState.PAUSE
+    var sidInFocus = ""
 
     fun toggleRecording() {
         if (state.isRecording())
@@ -33,13 +33,12 @@ class WatchListViewModel(
 
     fun isRecording() = state.isRecording()
 
-    fun getStockHistory(): List<Stock> {
-        return getStockHistory(recorder.mostExpensiveSid)
+    fun setStockInFocus() {
+        setStockInFocus(recorder.mostExpensiveSid)
     }
 
-    fun getStockHistory(sid: String): List<Stock> {
-        return recorder.stockRecord[sid]
-            ?: emptyList()
+    fun setStockInFocus(sid: String) {
+        sidInFocus = sid
     }
 
     override fun onCleared() {
@@ -81,7 +80,7 @@ class WatchListViewModel(
 
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return WatchListViewModel(recorder, scheduler) as T
+            return SharedViewModel(recorder, scheduler) as T
         }
     }
 }

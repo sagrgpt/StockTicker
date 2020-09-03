@@ -1,19 +1,20 @@
 package com.showcase.pricetracker.ui.stocks
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.showcase.pricetracker.R
 import com.showcase.pricetracker.network.NetworkFactory
 import com.showcase.pricetracker.schedulers.DefaultScheduler
-import com.showcase.pricetracker.ui.adapter.WatchListAdapter
-import com.showcase.pricetracker.ui.stocks.WatchListViewModel.WatchListVmFactory
+import com.showcase.pricetracker.ui.SharedViewModel
+import com.showcase.pricetracker.ui.SharedViewModel.WatchListVmFactory
+import com.showcase.pricetracker.ui.WatchListFragmentDirections
 import com.showcase.pricetracker.usecase.StockOverview
 import com.showcase.pricetracker.usecase.StockRecorder
 import com.showcase.pricetracker.usecase.Watchlist
@@ -21,11 +22,7 @@ import kotlinx.android.synthetic.main.watch_list_fragment.*
 
 class WatchListFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = WatchListFragment()
-    }
-
-    private lateinit var viewModel: WatchListViewModel
+    private lateinit var viewModel: SharedViewModel
 
     private lateinit var adapter: WatchListAdapter
 
@@ -69,13 +66,13 @@ class WatchListFragment : Fragment() {
     }
 
     private fun onClickHistory() {
-        val data = viewModel.getStockHistory()
-        Log.i("WatchList", "$data")
+        viewModel.setStockInFocus()
+        navigateToHistoryFragment()
     }
 
     private fun onClick(stock: StockOverview) {
-        val data = viewModel.getStockHistory(stock.sid)
-        Log.i("WatchList", "$data")
+        viewModel.setStockInFocus(stock.sid)
+        navigateToHistoryFragment()
     }
 
     private fun setupListView() {
@@ -107,15 +104,20 @@ class WatchListFragment : Fragment() {
         context?.let { setIcon(ContextCompat.getDrawable(it, id)) }
     }
 
+    private fun navigateToHistoryFragment() {
+        val direction = WatchListFragmentDirections.actionWatchListFragmentToHistoryFragment()
+        findNavController().navigate(direction)
+    }
+
     private fun initDependencies() {
         val schedulerProvider = DefaultScheduler()
         val remote = NetworkFactory.createGateway()
             .getQuotationRemote()
         val usecase = StockRecorder(remote, schedulerProvider)
         viewModel = ViewModelProvider(
-            this,
+            requireActivity(),
             WatchListVmFactory(usecase, schedulerProvider)
-        ).get(WatchListViewModel::class.java)
+        ).get(SharedViewModel::class.java)
     }
 
 
