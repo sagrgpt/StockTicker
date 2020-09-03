@@ -30,6 +30,7 @@ class StockRecorder(
             schedulerProvider.io
         )
             .flatMapSingle { remote.getStockQuotation(sids) }
+            .filter { it.isNotEmpty() }
             .doOnNext { it?.let { record(it) } }
             .map { it.toWatchList() }
     }
