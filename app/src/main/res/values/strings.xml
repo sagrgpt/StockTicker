@@ -16,4 +16,6 @@
     <string name="action_pause">Play</string>
     <string name="day_change_image_description">Day\'s change</string>
 
+    <string name="rupees_symbol">\u20B9</string>
+
 </resources>
