@@ -33,8 +33,11 @@ class WatchListViewHolder(
     }
 
     private fun setStockPrice(item: StockOverview) {
-        val priceTicker = "${R.string.rupees_symbol} ${item.price}"
-        price?.text = priceTicker
+        price?.apply {
+            context.getString(R.string.rupees_symbol)
+                .let { "$it ${item.price}" }
+                .also { text = it }
+        }
     }
 
     private fun setChangeIndicator(item: StockOverview) {
