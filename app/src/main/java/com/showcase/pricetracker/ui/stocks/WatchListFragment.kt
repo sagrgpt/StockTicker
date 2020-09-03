@@ -1,4 +1,4 @@
-package com.showcase.pricetracker.ui
+package com.showcase.pricetracker.ui.stocks
 
 import android.os.Bundle
 import android.util.Log
@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.showcase.pricetracker.R
 import com.showcase.pricetracker.network.NetworkFactory
 import com.showcase.pricetracker.schedulers.DefaultScheduler
-import com.showcase.pricetracker.ui.WatchListViewModel.WatchListVmFactory
 import com.showcase.pricetracker.ui.adapter.WatchListAdapter
+import com.showcase.pricetracker.ui.stocks.WatchListViewModel.WatchListVmFactory
 import com.showcase.pricetracker.usecase.StockOverview
 import com.showcase.pricetracker.usecase.StockRecorder
 import com.showcase.pricetracker.usecase.Watchlist
@@ -42,6 +42,7 @@ class WatchListFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setHasOptionsMenu(true)
+
         setupListView()
         initDependencies()
         viewModel.viewState().observe(viewLifecycleOwner, viewStateObserver)
@@ -68,11 +69,13 @@ class WatchListFragment : Fragment() {
     }
 
     private fun onClickHistory() {
-        Log.i("WatchList", "History option pressed")
+        val data = viewModel.getStockHistory()
+        Log.i("WatchList", "$data")
     }
 
     private fun onClick(stock: StockOverview) {
-        Log.i("WatchList", "${stock.sid} clicked")
+        val data = viewModel.getStockHistory(stock.sid)
+        Log.i("WatchList", "$data")
     }
 
     private fun setupListView() {

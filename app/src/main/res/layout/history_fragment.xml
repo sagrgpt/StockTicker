@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.stocks.WatchListFragment">
+    tools:context=".ui.history.HistoryFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/watchListRecycler"
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/watch_list_item" />
+        android:text="Hello" />
+
 </FrameLayout>

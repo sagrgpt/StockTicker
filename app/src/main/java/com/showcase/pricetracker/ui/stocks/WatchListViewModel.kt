@@ -1,4 +1,4 @@
-package com.showcase.pricetracker.ui
+package com.showcase.pricetracker.ui.stocks
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.showcase.pricetracker.schedulers.SchedulerProvider
+import com.showcase.pricetracker.usecase.Stock
 import com.showcase.pricetracker.usecase.StockRecorder
 import com.showcase.pricetracker.usecase.Watchlist
 import io.reactivex.rxjava3.disposables.Disposable
@@ -31,6 +32,15 @@ class WatchListViewModel(
     }
 
     fun isRecording() = state.isRecording()
+
+    fun getStockHistory(): List<Stock> {
+        return getStockHistory(recorder.mostExpensiveSid)
+    }
+
+    fun getStockHistory(sid: String): List<Stock> {
+        return recorder.stockRecord[sid]
+            ?: emptyList()
+    }
 
     override fun onCleared() {
         super.onCleared()

@@ -8,8 +8,17 @@
 
     <fragment
         android:id="@+id/watchListFragment"
-        android:name="com.showcase.pricetracker.ui.WatchListFragment"
-        android:label="watch_list_fragment"
-        tools:layout="@layout/watch_list_fragment" />
+        android:name="com.showcase.pricetracker.ui.stocks.WatchListFragment"
+        android:label="Stocks"
+        tools:layout="@layout/watch_list_fragment">
+        <action
+            android:id="@+id/action_watchListFragment_to_historyFragment"
+            app:destination="@id/historyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="com.showcase.pricetracker.ui.history.HistoryFragment"
+        android:label="History"
+        tools:layout="@layout/history_fragment" />
 
 </navigation>
