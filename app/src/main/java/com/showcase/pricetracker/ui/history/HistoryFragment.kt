@@ -8,25 +8,18 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.github.mikephil.charting.animation.Easing
-import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.formatter.IFillFormatter
-import com.github.mikephil.charting.formatter.ValueFormatter
 import com.showcase.pricetracker.R
 import com.showcase.pricetracker.ui.SharedViewModel
-import com.showcase.pricetracker.usecase.Quote
+import com.showcase.pricetracker.ui.base.BaseFragment
 import com.showcase.pricetracker.usecase.StockHistory
 import kotlinx.android.synthetic.main.history_fragment.*
-import java.util.*
 
-class HistoryFragment : Fragment() {
+class HistoryFragment : BaseFragment() {
 
     private lateinit var viewModel: SharedViewModel
+
+    lateinit var chartAdapter: ChartAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -35,6 +28,7 @@ class HistoryFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        getInjector().inject(this)
         viewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
         viewModel.history().observe(
             viewLifecycleOwner,
@@ -47,108 +41,11 @@ class HistoryFragment : Fragment() {
         setPrice(stockHistory.price)
         setAbsoluteChange(stockHistory.change)
         setPercentChange(stockHistory.percentChange)
-        if (stockHistory.quotes.isNotEmpty())
-            displayLineChart(stockHistory)
-
-    }
-
-    private fun displayLineChart(stockHistory: StockHistory) {
-        if (stockHistory.change > 0) {
+        chartAdapter.setUpChartFor(chart, stockHistory)
+        if (stockHistory.change > 0)
             setScreenAppearancePositive()
-            setUpLineChart(stockHistory.quotes, true)
-        } else {
+        else
             setScreenAppearanceNegative()
-            setUpLineChart(stockHistory.quotes, false)
-        }
-    }
-
-    private fun setUpLineChart(quotes: List<Quote>, isPositive: Boolean) {
-        setUpChartData(quotes, isPositive)
-        setChartProp()
-    }
-
-    private fun setUpChartData(quotes: List<Quote>, isPositive: Boolean) {
-        val dataSet = getChartDataSet(quotes)
-            .apply { setProps(isPositive) }
-        chart?.data = LineData(dataSet)
-            .apply { setValueTextSize(1f) }
-    }
-
-    private fun getChartDataSet(quotes: List<Quote>): LineDataSet {
-        val calendar = Calendar.getInstance()
-        val entries = mutableListOf<Entry>()
-        val labelList = mutableListOf<String>()
-        for (i in quotes.indices) {
-            calendar.timeInMillis = quotes[i].epoch
-            "%02d:%02d:%02d".format(
-                calendar[Calendar.HOUR_OF_DAY],
-                calendar[Calendar.MINUTE],
-                calendar[Calendar.SECOND]
-            )
-                .also { labelList.add(it) }
-            entries.add(Entry(i.toFloat(), quotes[i].price))
-        }
-
-        chart?.xAxis?.valueFormatter = object : ValueFormatter() {
-            override fun getFormattedValue(value: Float): String {
-                return labelList[value.toInt()]
-            }
-        }
-
-        return LineDataSet(entries, "DataSet1")
-    }
-
-    private fun LineDataSet.setProps(positive: Boolean) {
-        mode = LineDataSet.Mode.CUBIC_BEZIER
-        cubicIntensity = 0.1f
-        setDrawCircles(false)
-        setDrawFilled(true)
-        setDrawValues(false)
-        setFill(positive)
-    }
-
-    private fun LineDataSet.setFill(positive: Boolean) {
-        chart?.also {
-            fillFormatter = IFillFormatter { _, _ ->
-                it.axisLeft.axisMinimum
-            }
-        }
-        if (positive) {
-            context?.let {
-                fillDrawable = ContextCompat.getDrawable(it, R.drawable.gradient_positive)
-                color = ContextCompat.getColor(it, R.color.positiveChange)
-            }
-        } else {
-            context?.let {
-                fillDrawable = ContextCompat.getDrawable(it, R.drawable.gradient_negative)
-                color = ContextCompat.getColor(it, R.color.negativeChange)
-            }
-        }
-    }
-
-    private fun setChartProp() {
-        chart?.apply {
-            description?.isEnabled = false
-            setTouchEnabled(true)
-            isDragEnabled = true
-            setScaleEnabled(true)
-            setDrawGridBackground(false)
-            xAxis?.apply {
-                granularity = 1f
-                isEnabled = true
-                setDrawGridLines(false)
-                position = XAxis.XAxisPosition.BOTTOM
-            }
-            axisLeft?.apply {
-                isEnabled = true
-                setDrawGridLines(false)
-            }
-            axisRight?.isEnabled = false
-            legend?.isEnabled = false
-
-            animateX(500, Easing.EaseInExpo)
-        }
-
     }
 
     private fun setScreenAppearancePositive() {

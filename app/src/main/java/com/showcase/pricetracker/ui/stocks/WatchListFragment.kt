@@ -3,26 +3,25 @@ package com.showcase.pricetracker.ui.stocks
 import android.os.Bundle
 import android.view.*
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.showcase.pricetracker.R
-import com.showcase.pricetracker.network.NetworkFactory
-import com.showcase.pricetracker.schedulers.DefaultScheduler
 import com.showcase.pricetracker.ui.SharedViewModel
 import com.showcase.pricetracker.ui.SharedViewModel.SharedVmFactory
-import com.showcase.pricetracker.usecase.StockAnalyser
+import com.showcase.pricetracker.ui.base.BaseFragment
 import com.showcase.pricetracker.usecase.StockOverview
-import com.showcase.pricetracker.usecase.StockRecorder
 import kotlinx.android.synthetic.main.watch_list_fragment.*
 
-class WatchListFragment : Fragment() {
+class WatchListFragment : BaseFragment() {
 
     private lateinit var viewModel: SharedViewModel
+    lateinit var adapter: WatchListAdapter
+    lateinit var viewModelFactory: SharedVmFactory
 
-    private lateinit var adapter: WatchListAdapter
+    val itemClickListener: (StockOverview) -> Unit = { onItemClicked(it) }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -31,13 +30,10 @@ class WatchListFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        setHasOptionsMenu(true)
+        getInjector().inject(this)
         setupListView()
-        initDependencies()
-        viewModel.watchList().observe(
-            viewLifecycleOwner,
-            { it?.let { adapter.addToDataSet(it) } }
-        )
+        setUpViewModel()
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -65,9 +61,21 @@ class WatchListFragment : Fragment() {
         navigateToHistoryFragment()
     }
 
-    private fun onClick(stock: StockOverview) {
+    private fun onItemClicked(stock: StockOverview) {
         viewModel.analyseStockHistory(stock.sid)
         navigateToHistoryFragment()
+    }
+
+    private fun setUpViewModel() {
+        viewModel = ViewModelProvider(
+            requireActivity(),
+            viewModelFactory
+        ).get(SharedViewModel::class.java)
+
+        viewModel.watchList().observe(
+            viewLifecycleOwner,
+            { it?.let { adapter.addToDataSet(it) } }
+        )
     }
 
     private fun setupListView() {
@@ -79,9 +87,6 @@ class WatchListFragment : Fragment() {
 
         DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL)
             .also { watchListRecycler.addItemDecoration(it) }
-
-        adapter = WatchListAdapter(emptyList()) { onClick(it) }
-
         watchListRecycler.adapter = adapter
     }
 
@@ -102,17 +107,6 @@ class WatchListFragment : Fragment() {
     private fun navigateToHistoryFragment() {
         val direction = WatchListFragmentDirections.actionWatchListFragmentToHistoryFragment()
         findNavController().navigate(direction)
-    }
-
-    private fun initDependencies() {
-        val schedulerProvider = DefaultScheduler()
-        val remote = NetworkFactory.createGateway()
-            .getQuotationRemote()
-        val usecase = StockRecorder(remote, schedulerProvider)
-        viewModel = ViewModelProvider(
-            requireActivity(),
-            SharedVmFactory(usecase, StockAnalyser(), schedulerProvider)
-        ).get(SharedViewModel::class.java)
     }
 
 
