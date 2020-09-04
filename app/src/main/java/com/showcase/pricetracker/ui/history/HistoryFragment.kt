@@ -18,11 +18,11 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IFillFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.showcase.pricetracker.R
+import com.showcase.pricetracker.ui.HostActivity
 import com.showcase.pricetracker.ui.SharedViewModel
 import com.showcase.pricetracker.usecase.Quote
 import com.showcase.pricetracker.usecase.StockHistory
 import kotlinx.android.synthetic.main.history_fragment.*
-import java.text.SimpleDateFormat
 import java.util.*
 
 class HistoryFragment : Fragment() {
@@ -36,6 +36,7 @@ class HistoryFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        (activity as HostActivity).setTitle("History")
         viewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
         viewModel.history().observe(
             viewLifecycleOwner,
@@ -76,12 +77,20 @@ class HistoryFragment : Fragment() {
         val labelList = mutableListOf<String>()
         for (i in quotes.indices) {
             calendar.timeInMillis = quotes[i].epoch
-            calendar[Calendar.SECOND]
+            "%02d:%02d:%02d".format(
+                calendar[Calendar.HOUR_OF_DAY],
+                calendar[Calendar.MINUTE],
+                calendar[Calendar.SECOND]
+            )
+                .also { labelList.add(it) }
+            /*calendar[Calendar.MINUTE]
             labelList.add(SimpleDateFormat("mm:ss", Locale.ROOT)
-                .format(calendar.time))
+                .format(calendar.time))*/
             entries.add(Entry(i.toFloat(), quotes[i].price))
         }
 
+
+//        chart.xAxis.labelCount = labelList.size
         chart?.xAxis?.valueFormatter = object : ValueFormatter() {
             override fun getFormattedValue(value: Float): String {
                 return labelList[value.toInt()]

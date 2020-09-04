@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.showcase.pricetracker.R
 import com.showcase.pricetracker.network.NetworkFactory
 import com.showcase.pricetracker.schedulers.DefaultScheduler
+import com.showcase.pricetracker.ui.HostActivity
 import com.showcase.pricetracker.ui.SharedViewModel
 import com.showcase.pricetracker.ui.SharedViewModel.SharedVmFactory
 import com.showcase.pricetracker.usecase.StockAnalyser
@@ -41,7 +42,7 @@ class WatchListFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setHasOptionsMenu(true)
-
+        (activity as HostActivity).setTitle("Stock")
         setupListView()
         initDependencies()
         viewModel.watchList().observe(viewLifecycleOwner, watchListObserver)
