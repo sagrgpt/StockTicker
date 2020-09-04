@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit
 /**
  * A use-case class for recording and storing stocks.
  *
- * @since this application has no db dependency,
+ * @since This application has no db dependency,
  * the repository layer is not needed. Hence, the usecase has
  * a direct dependency on the Network Remote
  *
@@ -47,6 +47,7 @@ class StockRecorder(
             schedulerProvider.io
         )
             .flatMapSingle { remote.getStockQuotation(sids) }
+            /*.distinctUntilChanged()*/ //Include this to filter out duplicate from server
             .filter {
                 it.isNotEmpty()
             }

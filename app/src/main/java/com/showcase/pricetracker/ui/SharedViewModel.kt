@@ -79,6 +79,7 @@ class SharedViewModel(
             .subscribeOn(scheduler.io)
             .observeOn(scheduler.ui)
             .doOnSubscribe { state = RecordingState.PLAY }
+            .doOnComplete { state = RecordingState.PAUSE }
             .subscribe(
                 ::read
             ) { Log.e("WatchListVM", "Error while fetching watch list. ${it.message}") }
