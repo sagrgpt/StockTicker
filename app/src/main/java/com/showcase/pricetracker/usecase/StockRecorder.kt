@@ -48,9 +48,7 @@ class StockRecorder(
         )
             .flatMapSingle { remote.getStockQuotation(sids) }
             /*.distinctUntilChanged()*/ //Include this to filter out duplicate from server
-            .filter {
-                it.isNotEmpty()
-            }
+            .filter { it.isNotEmpty() }
             .doOnNext { it?.let { record(it) } }
             .map { it.toWatchList() }
     }
