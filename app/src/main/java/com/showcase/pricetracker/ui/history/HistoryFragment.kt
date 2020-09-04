@@ -49,6 +49,12 @@ class HistoryFragment : Fragment() {
         setPrice(stockHistory.price)
         setAbsoluteChange(stockHistory.change)
         setPercentChange(stockHistory.percentChange)
+        if (stockHistory.quotes.isNotEmpty())
+            displayLineChart(stockHistory)
+
+    }
+
+    private fun displayLineChart(stockHistory: StockHistory) {
         if (stockHistory.change > 0) {
             setScreenAppearancePositive()
             setUpLineChart(stockHistory.quotes, true)
@@ -56,7 +62,6 @@ class HistoryFragment : Fragment() {
             setScreenAppearanceNegative()
             setUpLineChart(stockHistory.quotes, false)
         }
-
     }
 
     private fun setUpLineChart(quotes: List<Quote>, isPositive: Boolean) {
