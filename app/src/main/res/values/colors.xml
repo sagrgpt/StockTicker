@@ -6,4 +6,5 @@
 
     <color name="positiveChange">#43A047</color>
     <color name="negativeChange">#E53935</color>
+    <color name="color_black">#000000</color>
 </resources>

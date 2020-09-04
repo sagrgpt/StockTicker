@@ -21,7 +21,7 @@
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:menu="@menu/main"
             tools:title="Stocks"
-            app:titleTextColor="#000000" />
+            app:titleTextColor="@color/color_black" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
