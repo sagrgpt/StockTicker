@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.*
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -18,7 +17,6 @@ import com.showcase.pricetracker.ui.SharedViewModel.SharedVmFactory
 import com.showcase.pricetracker.usecase.StockAnalyser
 import com.showcase.pricetracker.usecase.StockOverview
 import com.showcase.pricetracker.usecase.StockRecorder
-import com.showcase.pricetracker.usecase.Watchlist
 import kotlinx.android.synthetic.main.watch_list_fragment.*
 
 class WatchListFragment : Fragment() {
@@ -26,13 +24,6 @@ class WatchListFragment : Fragment() {
     private lateinit var viewModel: SharedViewModel
 
     private lateinit var adapter: WatchListAdapter
-
-    private val watchListObserver = Observer<Watchlist> {
-        it?.let {
-            adapter.dataSet = it.stockList
-            adapter.notifyDataSetChanged()
-        }
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -45,7 +36,10 @@ class WatchListFragment : Fragment() {
         (activity as HostActivity).setTitle("Stock")
         setupListView()
         initDependencies()
-        viewModel.watchList().observe(viewLifecycleOwner, watchListObserver)
+        viewModel.watchList().observe(
+            viewLifecycleOwner,
+            { it?.let { adapter.addToDataSet(it) } }
+        )
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

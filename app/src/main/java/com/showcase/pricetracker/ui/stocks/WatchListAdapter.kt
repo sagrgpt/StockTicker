@@ -7,6 +7,7 @@ import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import com.showcase.pricetracker.R
 import com.showcase.pricetracker.usecase.StockOverview
+import com.showcase.pricetracker.usecase.Watchlist
 
 class WatchListAdapter(
     var dataSet: List<StockOverview>,
@@ -23,6 +24,11 @@ class WatchListAdapter(
 
     override fun getItemCount(): Int {
         return dataSet.size
+    }
+
+    fun addToDataSet(watchlist: Watchlist) {
+        dataSet = watchlist.stockList
+        notifyDataSetChanged()
     }
 
     private fun ViewGroup.inflate(
