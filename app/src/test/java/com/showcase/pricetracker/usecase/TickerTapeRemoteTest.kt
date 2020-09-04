@@ -92,6 +92,7 @@ class TickerTapeRemoteTest {
         testObserver.assertNoErrors()
         testObserver.assertValueAt(0) {
             assertThat(it[0].price, `is`(2087.25F))
+            assertThat(it[0].epoch, `is`(1598956199812))
             true
         }
     }

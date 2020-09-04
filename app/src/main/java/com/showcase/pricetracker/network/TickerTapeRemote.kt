@@ -65,9 +65,9 @@ class TickerTapeRemote(
     private fun getTimeInMillis(date: String): Long {
         val cal = Calendar.getInstance()
         cal.time = SimpleDateFormat(
-            "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+            "yyyy-MM-dd'T'HH:mm:ss.SSSz",
             Locale.ROOT
-        ).run { parse(date) }
+        ).run { parse(date.replace("Z", "GMT")) }
             ?: throw ParseException("Unable to parse $date", 0)
         return cal.timeInMillis
     }

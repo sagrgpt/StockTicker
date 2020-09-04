@@ -3,13 +3,17 @@ package com.showcase.pricetracker.usecase
 class StockAnalyser {
 
     fun getStockHistory(quotes: List<Quote>): StockHistory {
-        return if (quotes.isEmpty())
-            return StockHistory()
-        else
-            getStockHistory(
+        return when {
+            quotes.isEmpty() -> StockHistory()
+            quotes.size < 2 -> getStockHistory(
+                quotes.last(),
+                emptyList()
+            )
+            else -> getStockHistory(
                 quotes.last(),
                 getHistoryInArithmeticProgression(quotes)
             )
+        }
     }
 
     private fun getStockHistory(
