@@ -85,7 +85,7 @@ class WatchListFragment : BaseFragment() {
             false
         ).also { watchListRecycler.layoutManager = it }
 
-        DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL)
+        DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
             .also { watchListRecycler.addItemDecoration(it) }
         watchListRecycler.adapter = adapter
     }
