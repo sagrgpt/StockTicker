@@ -13,8 +13,8 @@ import com.showcase.pricetracker.R
 import com.showcase.pricetracker.network.NetworkFactory
 import com.showcase.pricetracker.schedulers.DefaultScheduler
 import com.showcase.pricetracker.ui.SharedViewModel
-import com.showcase.pricetracker.ui.SharedViewModel.WatchListVmFactory
-import com.showcase.pricetracker.ui.WatchListFragmentDirections
+import com.showcase.pricetracker.ui.SharedViewModel.SharedVmFactory
+import com.showcase.pricetracker.usecase.StockAnalyser
 import com.showcase.pricetracker.usecase.StockOverview
 import com.showcase.pricetracker.usecase.StockRecorder
 import com.showcase.pricetracker.usecase.Watchlist
@@ -26,9 +26,11 @@ class WatchListFragment : Fragment() {
 
     private lateinit var adapter: WatchListAdapter
 
-    private val viewStateObserver = Observer<Watchlist> {
-        adapter.dataSet = it.stockList
-        adapter.notifyDataSetChanged()
+    private val watchListObserver = Observer<Watchlist> {
+        it?.let {
+            adapter.dataSet = it.stockList
+            adapter.notifyDataSetChanged()
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -42,7 +44,7 @@ class WatchListFragment : Fragment() {
 
         setupListView()
         initDependencies()
-        viewModel.viewState().observe(viewLifecycleOwner, viewStateObserver)
+        viewModel.watchList().observe(viewLifecycleOwner, watchListObserver)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -66,12 +68,12 @@ class WatchListFragment : Fragment() {
     }
 
     private fun onClickHistory() {
-        viewModel.setStockInFocus()
+        viewModel.analyseStockHistory()
         navigateToHistoryFragment()
     }
 
     private fun onClick(stock: StockOverview) {
-        viewModel.setStockInFocus(stock.sid)
+        viewModel.analyseStockHistory(stock.sid)
         navigateToHistoryFragment()
     }
 
@@ -116,7 +118,7 @@ class WatchListFragment : Fragment() {
         val usecase = StockRecorder(remote, schedulerProvider)
         viewModel = ViewModelProvider(
             requireActivity(),
-            WatchListVmFactory(usecase, schedulerProvider)
+            SharedVmFactory(usecase, StockAnalyser(), schedulerProvider)
         ).get(SharedViewModel::class.java)
     }
 
