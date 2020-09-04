@@ -13,7 +13,13 @@
         tools:layout="@layout/watch_list_fragment">
         <action
             android:id="@+id/action_watchListFragment_to_historyFragment"
-            app:destination="@id/historyFragment" />
+            app:destination="@id/historyFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/to_right"
+            app:popUpTo="@id/watchListFragment"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/historyFragment"
