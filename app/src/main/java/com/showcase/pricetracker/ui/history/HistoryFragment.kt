@@ -18,7 +18,6 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IFillFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.showcase.pricetracker.R
-import com.showcase.pricetracker.ui.HostActivity
 import com.showcase.pricetracker.ui.SharedViewModel
 import com.showcase.pricetracker.usecase.Quote
 import com.showcase.pricetracker.usecase.StockHistory
@@ -36,7 +35,6 @@ class HistoryFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        (activity as HostActivity).setTitle("History")
         viewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
         viewModel.history().observe(
             viewLifecycleOwner,
