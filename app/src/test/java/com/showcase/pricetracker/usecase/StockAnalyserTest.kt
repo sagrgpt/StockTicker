@@ -66,7 +66,7 @@ class StockAnalyserTest {
         assertThat(actualValue.change, `is`(quote1.change))
         assertThat(actualValue.price, `is`(quote1.price))
         assertThat(actualValue.epoch, `is`(quote1.epoch))
-        assertThat(actualValue.quotes, `is`(quoteList))
+        assertThat(actualValue.quotes, `is`(emptyList()))
     }
 
     @Test

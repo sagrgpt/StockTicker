@@ -23,4 +23,4 @@ This is an attempt cloning a stock tracking application's two usecase namely,
 - [OkHttp](http://square.github.io/okhttp/) - HTTP client that's efficient by default: HTTP/2 support allows all requests to the same host to share a socket
 - [Mockito](http://site.mockito.org/) - Most popular mocking framework for Java/kotlin.
 
-This application also signifies the benefits of TDD to achieve 92% code coverage for Business Logic.
+This application also leverages the benefits of TDD to achieve 92% code coverage for Business Logic.
