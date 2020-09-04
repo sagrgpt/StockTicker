@@ -33,7 +33,6 @@ class StockRecorder(
             .filter {
                 it.isNotEmpty()
             }
-            .distinctUntilChanged()
             .doOnNext { it?.let { record(it) } }
             .map { it.toWatchList() }
     }
