@@ -12,6 +12,14 @@ import com.showcase.pricetracker.usecase.StockRecorder
 import com.showcase.pricetracker.usecase.Watchlist
 import io.reactivex.rxjava3.disposables.Disposable
 
+/**
+ * A shared view-model between
+ * Watchlist and history screens.
+ *
+ * @param  recorder: A stock recorder use case to record stocks data
+ * @param stockAnalyser: A analyser use case to get stock history
+ * @param scheduler: Scheduler for threading requirements.
+ */
 class SharedViewModel(
     private val recorder: StockRecorder,
     private val stockAnalyser: StockAnalyser,
@@ -22,8 +30,10 @@ class SharedViewModel(
     private val watchListLiveData = MutableLiveData<Watchlist>()
     private val stockHistoryLiveData = MutableLiveData<StockHistory>()
     private var state = RecordingState.PAUSE
-    var sidInFocus = ""
 
+    /**
+     * Use this to play/pause stocks recording.
+     */
     fun toggleRecording() {
         if (state.isRecording())
             pauseRecorder()
@@ -31,12 +41,19 @@ class SharedViewModel(
             playRecorder()
     }
 
+    /**
+     * Trigger analysis of history of the
+     * most expensive stock known.
+     */
     fun analyseStockHistory() {
         analyseStockHistory(recorder.mostExpensiveSid)
     }
 
+    /**
+     * Trigger analysis of history of a stock
+     * @param sid: Sid of the stock
+     */
     fun analyseStockHistory(sid: String) {
-        sidInFocus = sid
         pauseRecorder()
         getStockHistory(sid)
     }

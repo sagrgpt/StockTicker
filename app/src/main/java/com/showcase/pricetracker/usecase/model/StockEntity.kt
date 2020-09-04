@@ -1,5 +1,8 @@
 package com.showcase.pricetracker.usecase.model
 
+/**
+ * A data model that should be returned from the network remotes.
+ */
 data class StockEntity(
     val change: Float,
     val close: Float,

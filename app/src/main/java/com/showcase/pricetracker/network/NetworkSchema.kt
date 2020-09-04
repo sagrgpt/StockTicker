@@ -2,7 +2,9 @@ package com.showcase.pricetracker.network
 
 import com.google.gson.annotations.SerializedName
 
-
+/**
+ * This is the response type of every ticker tape api.
+ */
 data class ApiResponse<T>(
     @SerializedName("data")
     val `data`: T? = null,

@@ -8,6 +8,11 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ * This class converts the json values from server to network entity
+ * @param service: The service needed for api communication
+ * @see [TickerTapeService]
+ */
 class TickerTapeRemote(
     private val service: TickerTapeService
 ) : QuotationRemote {

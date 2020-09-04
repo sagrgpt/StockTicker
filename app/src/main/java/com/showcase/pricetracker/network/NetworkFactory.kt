@@ -7,6 +7,10 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+/**
+ * A self-contained factory for Network module.
+ * Use this factory to get a single point of entrance to the network layer.
+ */
 object NetworkFactory {
 
     private const val baseUrl = "https://api.tickertape.in"

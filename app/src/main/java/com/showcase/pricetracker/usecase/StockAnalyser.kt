@@ -1,7 +1,21 @@
 package com.showcase.pricetracker.usecase
 
+/**
+ * A use-case class used to analyse stocks for charting purposes
+ */
 class StockAnalyser {
 
+    /**
+     * Use this function to arrange quotation in an
+     * ### Arithmetic Progression where d = fetch interval.
+
+     * The quotation list returned in the history is extrapolated
+     * such that during the time period the recording is turned off,
+     * the change in quotation is considered to be constant with time.
+     *
+     * @param quotes: List of recorded quotes for a stock
+     * @return The history of the stock.
+     */
     fun getStockHistory(quotes: List<Quote>): StockHistory {
         return when {
             quotes.isEmpty() -> StockHistory()

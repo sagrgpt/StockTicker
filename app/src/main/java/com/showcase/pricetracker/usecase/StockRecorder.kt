@@ -5,6 +5,16 @@ import com.showcase.pricetracker.usecase.model.StockEntity
 import io.reactivex.rxjava3.core.Observable
 import java.util.concurrent.TimeUnit
 
+/**
+ * A use-case class for recording and storing stocks.
+ *
+ * @since this application has no db dependency,
+ * the repository layer is not needed. Hence, the usecase has
+ * a direct dependency on the Network Remote
+ *
+ * @param remote: A network remote to get stock quotes from network layer
+ * @param schedulerProvider: Scheduler for threading requirements.
+ */
 class StockRecorder(
     private val remote: QuotationRemote,
     private val schedulerProvider: SchedulerProvider
@@ -22,6 +32,13 @@ class StockRecorder(
     val stockRecord = mutableMapOf<String, List<Quote>>()
     var mostExpensiveSid: String = ""
 
+    /**
+     * Initiates stock recording at an
+     * interval of 5 seconds and stores the quotation in
+     * [stockRecord]
+     *
+     * @return An observable of watchlist
+     */
     fun play(): Observable<Watchlist> {
         return Observable.interval(
             0,

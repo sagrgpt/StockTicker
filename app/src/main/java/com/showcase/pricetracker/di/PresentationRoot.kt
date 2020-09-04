@@ -8,6 +8,12 @@ import com.showcase.pricetracker.usecase.StockAnalyser
 import com.showcase.pricetracker.usecase.StockOverview
 import com.showcase.pricetracker.usecase.StockRecorder
 
+/**
+ * Second level component in the dependency graph.
+ * This root is synonymous to presentation layer.
+ * Currently, this is attached to every fragment
+ * @see [CompositionRoot]
+ */
 class PresentationRoot(
     private val compositionRoot: CompositionRoot,
 ) {

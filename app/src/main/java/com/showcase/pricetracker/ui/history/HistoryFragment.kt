@@ -1,7 +1,6 @@
 package com.showcase.pricetracker.ui.history
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,7 +33,6 @@ class HistoryFragment : BaseFragment() {
             viewLifecycleOwner,
             { it?.let { observe(it) } }
         )
-        Log.i("History", "${viewModel.sidInFocus} is in focus.")
     }
 
     private fun observe(stockHistory: StockHistory) {

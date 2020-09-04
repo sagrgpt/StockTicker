@@ -7,6 +7,10 @@ import com.showcase.pricetracker.di.Injector
 import com.showcase.pricetracker.di.PresentationRoot
 import com.showcase.pricetracker.ui.HostActivity
 
+/**
+ * A low-level abstraction for dependency injection
+ * logic for all fragments.
+ */
 open class BaseFragment : Fragment() {
 
     private var presentationRoot: PresentationRoot? = null

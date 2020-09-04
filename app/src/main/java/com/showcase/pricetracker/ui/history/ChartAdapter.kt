@@ -16,6 +16,11 @@ import com.showcase.pricetracker.usecase.StockHistory
 import java.lang.ref.WeakReference
 import java.util.*
 
+/**
+ * An adapter that abstracts the logic for
+ * wiring line chart using a 3rd party library
+ * [MPAndroidChart](https://github.com/PhilJay/MPAndroidChart)
+ */
 class ChartAdapter(
     context: Context
 ) {
@@ -23,6 +28,14 @@ class ChartAdapter(
     private val weakReference = WeakReference(context)
     private var chart: LineChart? = null
 
+    /**
+     * Creates and displays a line chart
+     * @param lineChart: View reference of the chart.
+     * @param stockHistory: The history of the stock
+     * for which the chart is to be drawn.
+
+     * [MPAndroidChart](https://github.com/PhilJay/MPAndroidChart)
+     */
     fun setUpChartFor(
         lineChart: LineChart,
         stockHistory: StockHistory
