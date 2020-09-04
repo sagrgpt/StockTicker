@@ -88,14 +88,9 @@ class HistoryFragment : Fragment() {
                 calendar[Calendar.SECOND]
             )
                 .also { labelList.add(it) }
-            /*calendar[Calendar.MINUTE]
-            labelList.add(SimpleDateFormat("mm:ss", Locale.ROOT)
-                .format(calendar.time))*/
             entries.add(Entry(i.toFloat(), quotes[i].price))
         }
 
-
-//        chart.xAxis.labelCount = labelList.size
         chart?.xAxis?.valueFormatter = object : ValueFormatter() {
             override fun getFormattedValue(value: Float): String {
                 return labelList[value.toInt()]
@@ -141,6 +136,7 @@ class HistoryFragment : Fragment() {
             setScaleEnabled(true)
             setDrawGridBackground(false)
             xAxis?.apply {
+                granularity = 1f
                 isEnabled = true
                 setDrawGridLines(false)
                 position = XAxis.XAxisPosition.BOTTOM
@@ -151,6 +147,7 @@ class HistoryFragment : Fragment() {
             }
             axisRight?.isEnabled = false
             legend?.isEnabled = false
+
             animateX(500, Easing.EaseInExpo)
         }
 
