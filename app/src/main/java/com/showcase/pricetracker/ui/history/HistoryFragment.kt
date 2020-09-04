@@ -162,7 +162,7 @@ class HistoryFragment : Fragment() {
     }
 
     private fun setPercentChange(newPercentChange: Float) {
-        val change = "(${newPercentChange})"
+        val change = "(%.2f)".format(newPercentChange)
         percentChange?.text = change
     }
 
