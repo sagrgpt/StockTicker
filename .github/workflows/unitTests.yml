@@ -15,8 +15,11 @@ jobs:
         with:
           java-version: 1.8
 
-      - name: Run Ktlint
+      - name: Run Ktlint checks
         run: bash ./gradlew ktlintCheck
+  
+      - name: Android Lint checks
+        run: bash ./gradlew lint
         
       - name: Run Unit Tests
         run: bash ./gradlew test
