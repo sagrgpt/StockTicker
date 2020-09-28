@@ -11,10 +11,10 @@ import java.util.*
 /**
  * This class converts the json values from server to network entity
  * @param service: The service needed for api communication
- * @see [TickerTapeService]
+ * @see [StockQuoteService]
  */
-class TickerTapeRemote(
-    private val service: TickerTapeService
+class StockQuoteRemote(
+    private val service: StockQuoteService
 ) : QuotationRemote {
 
     override fun getStockQuotation(

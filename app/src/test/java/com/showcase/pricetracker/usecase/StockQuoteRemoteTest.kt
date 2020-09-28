@@ -4,9 +4,9 @@ import com.google.gson.Gson
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.verify
 import com.showcase.pricetracker.network.ApiResponse
+import com.showcase.pricetracker.network.StockQuoteRemote
+import com.showcase.pricetracker.network.StockQuoteService
 import com.showcase.pricetracker.network.StocksSchema
-import com.showcase.pricetracker.network.TickerTapeRemote
-import com.showcase.pricetracker.network.TickerTapeService
 import com.showcase.pricetracker.usecase.model.NetworkException
 import io.reactivex.rxjava3.core.Single
 import org.hamcrest.CoreMatchers.`is`
@@ -17,12 +17,12 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 
-class TickerTapeRemoteTest {
+class StockQuoteRemoteTest {
 
     @Mock
-    private lateinit var service: TickerTapeService
+    private lateinit var service: StockQuoteService
 
-    private lateinit var remote: TickerTapeRemote
+    private lateinit var remote: StockQuoteRemote
 
     //region Stock json strings
     private val reilStock = "{\n" +
@@ -51,7 +51,7 @@ class TickerTapeRemoteTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        remote = TickerTapeRemote(service)
+        remote = StockQuoteRemote(service)
     }
 
     @Test

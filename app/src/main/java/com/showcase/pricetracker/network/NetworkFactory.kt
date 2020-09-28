@@ -13,19 +13,19 @@ import retrofit2.converter.gson.GsonConverterFactory
  */
 object NetworkFactory {
 
-    private const val baseUrl = "https://api.tickertape.in"
+    private const val baseUrl = "https://api.google.com"
 
     fun createGateway(): NetworkGateway {
         return RemoteGateway(getRemoteService())
     }
 
-    private fun getRemoteService(): TickerTapeService {
+    private fun getRemoteService(): StockQuoteService {
         val retrofit = retrofit(
             okHttpClient(httpLoggingInterceptor()),
             gsonFactoryConverter()
         )
 
-        return retrofit.create(TickerTapeService::class.java)
+        return retrofit.create(StockQuoteService::class.java)
     }
 
     private fun retrofit(

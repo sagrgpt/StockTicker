@@ -5,9 +5,9 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 /**
- * A retrofit interface that exposes the Ticker Tape APIs
+ * A retrofit interface that exposes the Stock APIs
  */
-interface TickerTapeService {
+interface StockQuoteService {
 
     /**
      * Get quotation for a multiple stocks.
